@@ -7,7 +7,7 @@ A codebase-aware root cause attribution engine for Next.js applications, built a
 
 **7/7 file accuracy · 7/7 function accuracy** across all ground-truth cases (v1.1.0 → v1.7.0)
 
- [View live eval dashboard](https://htmlpreview.github.io/?https://github.com/JimSab068/eval-harness/blob/main/docs/InterfereDashboard.html)
+![Eval Dashboard](docs/eval_screenshot.png)
 
 
 ---
