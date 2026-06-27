@@ -2,6 +2,14 @@
 
 A codebase-aware root cause attribution engine for Next.js applications, built as a portfolio project targeting [Interfere (YC S25)](https://interfere.com). The harness ingests runtime error envelopes from the `@interfere/next` SDK, attributes each error to its culprit commit using a RAG + GitHub diff + Gemini pipeline, and scores attribution accuracy against a ground-truth eval dataset.
 
+
+## Eval Results
+
+**7/7 file accuracy · 7/7 function accuracy** across all ground-truth cases (v1.1.0 → v1.7.0)
+
+👉 [View live eval dashboard](https://htmlpreview.github.io/?https://github.com/JimSab068/eval-harness/blob/main/docs/eval_dashboard.html)
+
+
 ---
 
 ## Architecture
