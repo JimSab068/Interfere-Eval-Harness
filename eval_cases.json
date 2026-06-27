@@ -1,0 +1,410 @@
+[
+  {
+    "tag": "v1.1.0",
+    "commit_sha": "3791fca21f1b99b2909fd2b5dad1e9264d3d1f94",
+    "bug_id": "auth-gmail-session-expiry",
+    "ground_truth_file": "app/api/auth/route.ts",
+    "ground_truth_function": "POST",
+    "ground_truth_commit_introduced": "v1.1.0",
+    "error_type": "AuthError",
+    "expected_message": "Session expired",
+    "route": "/api/auth",
+    "route_type": "route",
+    "error_source": "server",
+    "prev_tag": "v1.0.0-clean",
+    "changed_files_in_tag": [
+      "app/api/auth/route.ts"
+    ],
+    "simulated_envelope": {
+      "uuid": "eval-auth-gmail-session-expiry",
+      "v": 0,
+      "buildId": "3791fca2",
+      "clientTs": 1719316200000,
+      "sessionId": "server_3791fca2",
+      "sessionSource": "async_context",
+      "runtime": "node",
+      "environment": "production",
+      "releaseId": "v1.1.0",
+      "type": "error",
+      "context": {
+        "runtime": "nextjs",
+        "routePath": "/api/auth",
+        "routeType": "route",
+        "requestMethod": "POST",
+        "requestPath": "/api/auth",
+        "routerKind": "App Router"
+      },
+      "payload": {
+        "exceptions": [
+          {
+            "type": "AuthError",
+            "value": "Session expired",
+            "mechanism": {
+              "type": "instrument",
+              "handled": false
+            },
+            "frames": [
+              {
+                "fileName": "app/api/auth/route.ts",
+                "functionName": "POST",
+                "lineNumber": 1,
+                "columnNumber": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "diff_preview": "diff --git a/app/api/auth/route.ts b/app/api/auth/route.ts\nindex 71a9fb7..6d4d750 100644\n--- a/app/api/auth/route.ts\n+++ b/app/api/auth/route.ts\n@@ -2,8 +2,19 @@ export async function POST(request: Request) {\n   const body = await request.json()\n   const { email, password } = body\n \n-  // mock user check\n-  if (email === \"test@njit.edu\" && password === \"pass123\") {\n+  if (email.includes(\"@gmail.com\")) {\n+    return Response.json({ error: \"Session expired\" }, { status: 401 })\n+  }\n+\n+  const expe"
+  },
+  {
+    "tag": "v1.2.0",
+    "commit_sha": "ac8ef20149a5bb0e7dfe9b1deca58f16ba20c152",
+    "bug_id": "payment-amex-rejection",
+    "ground_truth_file": "app/api/payment/route.ts",
+    "ground_truth_function": "POST",
+    "ground_truth_commit_introduced": "v1.2.0",
+    "error_type": "PaymentError",
+    "expected_message": "Payment processor error: unsupported card type",
+    "route": "/api/payment",
+    "route_type": "route",
+    "error_source": "server",
+    "prev_tag": "v1.1.0",
+    "changed_files_in_tag": [
+      "app/api/payment/route.ts",
+      "app/checkout/page.tsx"
+    ],
+    "simulated_envelope": {
+      "uuid": "eval-payment-amex-rejection",
+      "v": 0,
+      "buildId": "ac8ef201",
+      "clientTs": 1719316200000,
+      "sessionId": "server_ac8ef201",
+      "sessionSource": "async_context",
+      "runtime": "node",
+      "environment": "production",
+      "releaseId": "v1.2.0",
+      "type": "error",
+      "context": {
+        "runtime": "nextjs",
+        "routePath": "/api/payment",
+        "routeType": "route",
+        "requestMethod": "POST",
+        "requestPath": "/api/payment",
+        "routerKind": "App Router"
+      },
+      "payload": {
+        "exceptions": [
+          {
+            "type": "PaymentError",
+            "value": "Payment processor error: unsupported card type",
+            "mechanism": {
+              "type": "instrument",
+              "handled": false
+            },
+            "frames": [
+              {
+                "fileName": "app/api/payment/route.ts",
+                "functionName": "POST",
+                "lineNumber": 1,
+                "columnNumber": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "diff_preview": "diff --git a/app/api/payment/route.ts b/app/api/payment/route.ts\nindex 3b72cf8..df60c69 100644\n--- a/app/api/payment/route.ts\n+++ b/app/api/payment/route.ts\n@@ -2,6 +2,12 @@ export async function POST(request: Request) {\n   const body = await request.json()\n   const { card, amount } = body\n \n+    if (card.length === 15) {\n+    return Response.json(\n+      { error: \"Payment processor error: unsupported card type\" },\n+      { status: 400 }\n+    )\n+  }\n \n \n   return Response.json({ success: true, t"
+  },
+  {
+    "tag": "v1.3.0",
+    "commit_sha": "fa97754746c6cfc14588bfb7221dedae9e611f69",
+    "bug_id": "payment-random-500",
+    "ground_truth_file": "app/api/payment/route.ts",
+    "ground_truth_function": "POST",
+    "ground_truth_commit_introduced": "v1.3.0",
+    "error_type": "InternalServerError",
+    "expected_message": "Internal payment error",
+    "route": "/api/payment",
+    "route_type": "route",
+    "error_source": "server",
+    "prev_tag": "v1.2.0",
+    "changed_files_in_tag": [
+      "app/api/payment/route.ts"
+    ],
+    "simulated_envelope": {
+      "uuid": "eval-payment-random-500",
+      "v": 0,
+      "buildId": "fa977547",
+      "clientTs": 1719316200000,
+      "sessionId": "server_fa977547",
+      "sessionSource": "async_context",
+      "runtime": "node",
+      "environment": "production",
+      "releaseId": "v1.3.0",
+      "type": "error",
+      "context": {
+        "runtime": "nextjs",
+        "routePath": "/api/payment",
+        "routeType": "route",
+        "requestMethod": "POST",
+        "requestPath": "/api/payment",
+        "routerKind": "App Router"
+      },
+      "payload": {
+        "exceptions": [
+          {
+            "type": "InternalServerError",
+            "value": "Internal payment error",
+            "mechanism": {
+              "type": "instrument",
+              "handled": false
+            },
+            "frames": [
+              {
+                "fileName": "app/api/payment/route.ts",
+                "functionName": "POST",
+                "lineNumber": 1,
+                "columnNumber": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "diff_preview": "diff --git a/app/api/payment/route.ts b/app/api/payment/route.ts\nindex df60c69..9d4bab9 100644\n--- a/app/api/payment/route.ts\n+++ b/app/api/payment/route.ts\n@@ -9,6 +9,13 @@ export async function POST(request: Request) {\n     )\n   }\n \n+  if (Math.random() < 0.4) {\n+    return Response.json(\n+      { error: \"Internal payment error\" },\n+      { status: 500 }\n+    )\n+  }\n+\n \n   return Response.json({ success: true, transactionId: \"txn_\" + Date.now() })\n }\n\\ No newline at end of file"
+  },
+  {
+    "tag": "v1.4.0",
+    "commit_sha": "2019ba802aa2e02dbfd979aef217a8011558b431",
+    "bug_id": "dashboard-null-amount",
+    "ground_truth_file": "app/dashboard/page.tsx",
+    "ground_truth_function": "Dashboard",
+    "ground_truth_commit_introduced": "v1.4.0",
+    "error_type": "TypeError",
+    "expected_message": "Cannot read properties of null (reading 'toFixed')",
+    "route": "/dashboard",
+    "route_type": "render",
+    "error_source": "server",
+    "prev_tag": "v1.3.0",
+    "changed_files_in_tag": [
+      "data/transactions.json"
+    ],
+    "simulated_envelope": {
+      "uuid": "eval-dashboard-null-amount",
+      "v": 0,
+      "buildId": "2019ba80",
+      "clientTs": 1719316200000,
+      "sessionId": "server_2019ba80",
+      "sessionSource": "async_context",
+      "runtime": "node",
+      "environment": "production",
+      "releaseId": "v1.4.0",
+      "type": "error",
+      "context": {
+        "runtime": "nextjs",
+        "routePath": "/dashboard",
+        "routeType": "render",
+        "requestMethod": null,
+        "requestPath": "/dashboard",
+        "routerKind": "App Router"
+      },
+      "payload": {
+        "exceptions": [
+          {
+            "type": "TypeError",
+            "value": "Cannot read properties of null (reading 'toFixed')",
+            "mechanism": {
+              "type": "instrument",
+              "handled": false
+            },
+            "frames": [
+              {
+                "fileName": "app/dashboard/page.tsx",
+                "functionName": "Dashboard",
+                "lineNumber": 1,
+                "columnNumber": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "diff_preview": "diff --git a/data/transactions.json b/data/transactions.json\nindex 392a645..2402e9a 100644\n--- a/data/transactions.json\n+++ b/data/transactions.json\n@@ -1,7 +1,8 @@\n [\n   { \"id\": \"t1\", \"amount\": 99.99, \"status\": \"success\", \"date\": \"2026-06-01\", \"customer\": \"Alice\" },\n-  { \"id\": \"t2\", \"amount\": 79.99, \"status\": \"pending\", \"date\": \"2026-06-02\", \"customer\": \"Bob\" },\n+  { \"id\": \"t2\", \"amount\": null, \"status\": \"pending\", \"date\": \"2026-06-02\", \"customer\": \"Bob\" },\n   { \"id\": \"t3\", \"amount\": 49.99, \"st",
+    "note": "root cause is data/transactions.json \u2014 null amount on Bob's entry"
+  },
+  {
+    "tag": "v1.5.0",
+    "commit_sha": "fea5c50d613e02705f094819769489972455e8c3",
+    "bug_id": "analytics-division-by-zero",
+    "ground_truth_file": "app/api/revenue/route.ts",
+    "ground_truth_function": "GET",
+    "ground_truth_commit_introduced": "v1.5.0",
+    "error_type": "RangeError",
+    "expected_message": "Invalid date range: no data found for this period",
+    "route": "/api/revenue",
+    "route_type": "route",
+    "error_source": "server",
+    "prev_tag": "v1.4.0",
+    "changed_files_in_tag": [
+      "app/api/revenue/route.ts"
+    ],
+    "simulated_envelope": {
+      "uuid": "eval-analytics-division-by-zero",
+      "v": 0,
+      "buildId": "fea5c50d",
+      "clientTs": 1719316200000,
+      "sessionId": "server_fea5c50d",
+      "sessionSource": "async_context",
+      "runtime": "node",
+      "environment": "production",
+      "releaseId": "v1.5.0",
+      "type": "error",
+      "context": {
+        "runtime": "nextjs",
+        "routePath": "/api/revenue",
+        "routeType": "route",
+        "requestMethod": "POST",
+        "requestPath": "/api/revenue",
+        "routerKind": "App Router"
+      },
+      "payload": {
+        "exceptions": [
+          {
+            "type": "RangeError",
+            "value": "Invalid date range: no data found for this period",
+            "mechanism": {
+              "type": "instrument",
+              "handled": false
+            },
+            "frames": [
+              {
+                "fileName": "app/api/revenue/route.ts",
+                "functionName": "GET",
+                "lineNumber": 1,
+                "columnNumber": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "diff_preview": "diff --git a/app/api/revenue/route.ts b/app/api/revenue/route.ts\nindex 295b6eb..abc6c3a 100644\n--- a/app/api/revenue/route.ts\n+++ b/app/api/revenue/route.ts\n@@ -14,9 +14,6 @@ export async function GET(request: Request) {\n     return date >= fromDate && date <= toDate\n   })\n \n-  if (filtered.length === 0) {\n-    return Response.json({ data: [], total: 0, average: 0 })\n-  }\n \n   const total = filtered.reduce((sum, r) => sum + r.revenue, 0)\n   const average = total / filtered.length"
+  },
+  {
+    "tag": "v1.6.0",
+    "commit_sha": "2b1fccdf4a5f95a95810f06457cfcd17c47a6a70",
+    "bug_id": "webhook-malformed-payload",
+    "ground_truth_file": "app/api/webhooks/route.ts",
+    "ground_truth_function": "POST",
+    "ground_truth_commit_introduced": "v1.6.0",
+    "error_type": "SyntaxError",
+    "expected_message": "Malformed webhook payload",
+    "route": "/api/webhooks",
+    "route_type": "route",
+    "error_source": "server",
+    "prev_tag": "v1.5.0",
+    "changed_files_in_tag": [
+      "app/api/webhooks/route.ts"
+    ],
+    "simulated_envelope": {
+      "uuid": "eval-webhook-malformed-payload",
+      "v": 0,
+      "buildId": "2b1fccdf",
+      "clientTs": 1719316200000,
+      "sessionId": "server_2b1fccdf",
+      "sessionSource": "async_context",
+      "runtime": "node",
+      "environment": "production",
+      "releaseId": "v1.6.0",
+      "type": "error",
+      "context": {
+        "runtime": "nextjs",
+        "routePath": "/api/webhooks",
+        "routeType": "route",
+        "requestMethod": "POST",
+        "requestPath": "/api/webhooks",
+        "routerKind": "App Router"
+      },
+      "payload": {
+        "exceptions": [
+          {
+            "type": "SyntaxError",
+            "value": "Malformed webhook payload",
+            "mechanism": {
+              "type": "instrument",
+              "handled": false
+            },
+            "frames": [
+              {
+                "fileName": "app/api/webhooks/route.ts",
+                "functionName": "POST",
+                "lineNumber": 1,
+                "columnNumber": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "diff_preview": "diff --git a/app/api/webhooks/route.ts b/app/api/webhooks/route.ts\nindex 6c060df..1146f29 100644\n--- a/app/api/webhooks/route.ts\n+++ b/app/api/webhooks/route.ts\n@@ -6,7 +6,7 @@ export async function POST(request: Request) {\n   try {\n     body = await request.json()\n   } catch {\n-    return Response.json({ error: \"Malformed payload\" }, { status: 400 })\n+    throw new Error(\"Malformed webhook payload\")\n   }\n \n   const { id, type, payload } = body"
+  },
+  {
+    "tag": "v1.7.0",
+    "commit_sha": "6ec11a721d48ba2a0cbb54f193a5a2f9d0724877",
+    "bug_id": "webhook-idempotency-failure",
+    "ground_truth_file": "app/api/webhooks/route.ts",
+    "ground_truth_function": "POST",
+    "ground_truth_commit_introduced": "v1.7.0",
+    "error_type": "LogicError",
+    "expected_message": "Processing duplicate event",
+    "route": "/api/webhooks",
+    "route_type": "route",
+    "error_source": "server",
+    "prev_tag": "v1.6.0",
+    "changed_files_in_tag": [
+      "app/api/webhooks/route.ts"
+    ],
+    "simulated_envelope": {
+      "uuid": "eval-webhook-idempotency-failure",
+      "v": 0,
+      "buildId": "6ec11a72",
+      "clientTs": 1719316200000,
+      "sessionId": "server_6ec11a72",
+      "sessionSource": "async_context",
+      "runtime": "node",
+      "environment": "production",
+      "releaseId": "v1.7.0",
+      "type": "error",
+      "context": {
+        "runtime": "nextjs",
+        "routePath": "/api/webhooks",
+        "routeType": "route",
+        "requestMethod": "POST",
+        "requestPath": "/api/webhooks",
+        "routerKind": "App Router"
+      },
+      "payload": {
+        "exceptions": [
+          {
+            "type": "LogicError",
+            "value": "Processing duplicate event",
+            "mechanism": {
+              "type": "instrument",
+              "handled": false
+            },
+            "frames": [
+              {
+                "fileName": "app/api/webhooks/route.ts",
+                "functionName": "POST",
+                "lineNumber": 1,
+                "columnNumber": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "diff_preview": "diff --git a/app/api/webhooks/route.ts b/app/api/webhooks/route.ts\nindex 1146f29..5472414 100644\n--- a/app/api/webhooks/route.ts\n+++ b/app/api/webhooks/route.ts\n@@ -16,7 +16,7 @@ export async function POST(request: Request) {\n   }\n \n   if (processedEvents.has(id)) {\n-    return Response.json({ received: true, skipped: true, eventId: id })\n+    console.log(`Processing duplicate event: ${id}`)\n   }\n \n   processedEvents.add(id)\n@@ -35,4 +35,5 @@ export async function GET() {\n     { id: \"evt_duplica"
+  }
+]
